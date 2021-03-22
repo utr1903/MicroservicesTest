@@ -3,6 +3,7 @@ using BeverageMicroservice.Data;
 using BeverageMicroservice.Entities;
 using BeverageMicroservice.Services.AdvancedService.BeverageServiceA;
 using BeverageMicroservice.Services.PrimitiveService.BeverageServiceP;
+using BeverageMicroservice.Services.PrimitiveService.CategoryServiceP;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -35,14 +36,32 @@ namespace BeverageMicroservice
             services.AddScoped<DbContext, BeveragesContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            #region REPOSITORIES
+            
             // Beverage
             services.AddScoped<ITrackableRepository<Beverage>, TrackableRepository<Beverage>>();
 
+            // Category
+            services.AddScoped<ITrackableRepository<Category>, TrackableRepository<Category>>();
+
+            #endregion REPOSITORIES
+
+            #region PRIMITIVE_SERVICES
+            
             // Beverage
             services.AddScoped<IBeverageServiceP, BeverageServiceP>();
 
+            // Category
+            services.AddScoped<ICategoryServiceP, CategoryServiceP>();
+
+            #endregion PRIMITIVE_SERVICES
+
+            #region ADVANCED_SERVICES
+
             // Beverage
             services.AddScoped<IBeverageServiceA, BeverageServiceA>();
+
+            #endregion ADVANCED_SERVICES
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
