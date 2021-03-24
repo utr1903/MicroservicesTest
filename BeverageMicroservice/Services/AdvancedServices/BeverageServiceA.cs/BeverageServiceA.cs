@@ -21,13 +21,21 @@ namespace BeverageMicroservice.Services.AdvancedService.BeverageServiceA
             _categoryServiceP = categoryServiceP;
         }
 
+        #region BEVERAGE
+
         public IEnumerable<Beverage> GetBeverages()
         {
             return _beverageServiceP.Queryable().AsEnumerable();
         }
 
-        public void InsertBeverage(InsertBeverageRequestModel dto)
+        public Beverage InsertBeverage(InsertBeverageRequestModel dto)
         {
+            if (dto.Name != null)
+                throw new Exception("Name of beverage not valid");
+
+            if (dto.Price != null)
+                throw new Exception("Price of beverage not valid");
+            
             var category = _categoryServiceP.GetById(dto.Categoryid);
             if (category == null)
                 throw new Exception("Category not found");
@@ -36,13 +44,15 @@ namespace BeverageMicroservice.Services.AdvancedService.BeverageServiceA
                 Id = Guid.NewGuid(),
                 Categoryid = dto.Categoryid,
                 Name = dto.Name,
-                Description = dto.Description
+                Description = dto.Description,
+                Price = dto.Price.Value
             };
 
             _beverageServiceP.Insert(beverage);
+            return beverage;
         }
 
-        public void UpdateBeverage(UpdateBeverageRequestModel dto)
+        public Beverage UpdateBeverage(UpdateBeverageRequestModel dto)
         {
             var beverage = _beverageServiceP.GetById(dto.Beverageid);
             if (beverage == null)
@@ -63,7 +73,50 @@ namespace BeverageMicroservice.Services.AdvancedService.BeverageServiceA
             if (dto.Description != null)
                 beverage.Description = dto.Description;
 
+            if (dto.Price != null)
+                beverage.Price = dto.Price.Value;
+
             _beverageServiceP.Update(beverage);
+            return beverage;
         }
+
+        #endregion BEVERAGE
+
+        #region CATEGORY
+
+        public IEnumerable<Category> GetCategories()
+        {
+            return _categoryServiceP.Queryable().AsEnumerable();
+        }
+
+        public Category InsertCategory(InsertCategoryRequestModel dto)
+        {
+            var category = new Category {
+                Id = Guid.NewGuid(),
+                Name = dto.Name,
+                Description = dto.Description
+            };
+
+            _categoryServiceP.Insert(category);
+            return category;
+        }
+
+        public Category UpdateCategory(UpdateCategoryRequestModel dto)
+        {
+            var category = _categoryServiceP.GetById(dto.Categoryid);
+            if (category == null)
+                throw new Exception("Category not found");
+            
+            if (dto.Name != null)
+                category.Name = dto.Name;
+            
+            if (dto.Description != null)
+                category.Description = dto.Description;
+
+            _categoryServiceP.Update(category);
+            return category;
+        }
+
+        #endregion CATEGORY
     }
 }

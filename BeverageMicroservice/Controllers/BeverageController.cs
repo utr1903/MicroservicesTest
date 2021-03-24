@@ -24,6 +24,8 @@ namespace BeverageMicroservice.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        #region BEVERAGES
+
         [HttpGet]
         [Route("GetBeverages")]
         public ActionResult<IEnumerable<Beverage>> GetBeverages()
@@ -44,16 +46,16 @@ namespace BeverageMicroservice.Controllers
 
         [HttpPost]
         [Route("InsertBeverage")]
-        public async Task<ActionResult> InsertBeverage([FromBody] InsertBeverageRequestModel dto)
+        public async Task<ActionResult<Beverage>> InsertBeverage([FromBody] InsertBeverageRequestModel dto)
         {
             if (!ModelState.IsValid)
                 return ValidationProblem();
             
             try
             {
-                _beverageServiceA.InsertBeverage(dto);
+                var result = _beverageServiceA.InsertBeverage(dto);
                 await _unitOfWork.SaveChangesAsync();
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -63,21 +65,83 @@ namespace BeverageMicroservice.Controllers
 
         [HttpPost]
         [Route("UpdateBeverage")]
-        public async Task<ActionResult> UpdateBeverage([FromBody] UpdateBeverageRequestModel dto)
+        public async Task<ActionResult<Beverage>> UpdateBeverage([FromBody] UpdateBeverageRequestModel dto)
         {
             if (!ModelState.IsValid)
                 return ValidationProblem();
             
             try
             {
-                _beverageServiceA.UpdateBeverage(dto);
+                var result = _beverageServiceA.UpdateBeverage(dto);
                 await _unitOfWork.SaveChangesAsync();
-                return Ok();
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex);
             }
         }
+
+        #endregion BEVERAGES
+
+        #region CATEGORYS
+
+        [HttpGet]
+        [Route("GetCategories")]
+        public ActionResult<IEnumerable<Category>> GetCategories()
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem();
+            
+            try
+            {
+                var result = _beverageServiceA.GetCategories();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("InsertCategory")]
+        public async Task<ActionResult<Category>> InsertCategory([FromBody] InsertCategoryRequestModel dto)
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem();
+            
+            try
+            {
+                var result = _beverageServiceA.InsertCategory(dto);
+                await _unitOfWork.SaveChangesAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost]
+        [Route("UpdateCategory")]
+        public async Task<ActionResult> UpdateCategory([FromBody] UpdateCategoryRequestModel dto)
+        {
+            if (!ModelState.IsValid)
+                return ValidationProblem();
+            
+            try
+            {
+                var result = _beverageServiceA.UpdateCategory(dto);
+                await _unitOfWork.SaveChangesAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        #endregion CATEGORYS
     }
 }

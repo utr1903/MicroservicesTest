@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using BeverageMicroservice.Data;
 using BeverageMicroservice.Entities;
@@ -71,7 +72,7 @@ namespace BeverageMicroservice
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -86,6 +87,10 @@ namespace BeverageMicroservice
         private void ReadConnectionString()
         {
             var dir = Directory.GetCurrentDirectory();
+            Console.WriteLine(dir);
+            var files = Directory.GetFiles(dir);
+            foreach (var file in files)
+                Console.WriteLine(file);
             using var sr = new StreamReader(dir + Path.DirectorySeparatorChar + "connectionstring.txt");
             Constants.ConnectionString = sr.ReadLine();
         }

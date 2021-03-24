@@ -1,0 +1,15 @@
+version: '3.5'
+services:
+  postgres-test:
+    image: postgres
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpassword
+      PGDATA: /var/lib/postgres/data/pgdata
+    ports:
+      - "5432:5432"
+  
+  beverage-microservice:
+    build: BeverageMicroservice/
+    ports:
+    - "8080:80"

@@ -7,7 +7,11 @@ namespace BeverageMicroservice.Services.AdvancedService.BeverageServiceA
     public interface IBeverageServiceA
     {
         IEnumerable<Beverage> GetBeverages();
-        void InsertBeverage(InsertBeverageRequestModel dto);
-        void UpdateBeverage(UpdateBeverageRequestModel dto);
+        Beverage InsertBeverage(InsertBeverageRequestModel dto);
+        Beverage UpdateBeverage(UpdateBeverageRequestModel dto);
+
+        IEnumerable<Category> GetCategories();
+        Category InsertCategory(InsertCategoryRequestModel dto);
+        Category UpdateCategory(UpdateCategoryRequestModel dto);
     }
 }
